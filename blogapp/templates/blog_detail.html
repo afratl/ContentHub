@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+
+
+{% block title %} Blog Detayı {% endblock title %}
+
+{% block content %}
+<h2 style='color:#333'>{{ blog.title }}</h2>
+<img style= 'width:330px; height:500px' src="{{image}}" alt="Blog görseli" />
+<p style='color:#333'>{{ blog.content }}</p>
+
+<form method="post" action="{% url 'like_toggle' blog.slug %}">
+    {% csrf_token %}
+    <button type="submit">
+      {% if is_liked %}
+        Beğenildi ❤️
+      {% else %}
+        Beğen 👍
+      {% endif %}
+    </button>
+  </form>
+
+<p style='color:#333'><strong>Görüntülenme Sayısı:</strong> {{ total_views }}</p>
+<p style='color:#333'><strong>Beğeni Sayısı: </strong>{{ like_count }}</p>
+<p style='color:#333'><strong>Yorum Sayısı: </strong>{{ comment_count }}</p>
+<div>
+    <h4>Yorumlar:</h4>
+    <ul>
+        {% for comment in comments %}
+            <li>
+                <strong>{{ comment.user.name}}</strong>: {{ comment.content }} <br>
+                <small>{{ comment.time_stamp }}</small>
+            </li>
+        {% empty %}
+            <li>Henüz yorum yapılmamış.</li>
+        {% endfor %}
+    </ul>
+
+    <h3>Yorum Yap</h3>
+    <form method="POST" >
+        {% csrf_token %}
+        {{ comment_form.as_p }}
+        <button type="submit">Yorum Yap</button>
+    </form>
+
+</div>
+
+
+{% endblock content %}

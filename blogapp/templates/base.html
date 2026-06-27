@@ -1,0 +1,127 @@
+{% load static %}
+{% load custom_filters %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{% static 'blogapp/css/bootstrap.min.css'%}">
+    {% load static %}
+<link rel="icon" href="images/icon.png" type="image/gif" sizes="16x16">
+<meta content="text/html;charset=utf-8" http-equiv="Content-Type">
+<meta content="width=device-width, initial-scale=1.0" name="viewport" />
+<meta content="" name="description" />
+<meta content="" name="keywords" />
+<meta content="" name="author" />
+<!-- CSS Files
+================================================== -->
+<link href="{% static "blogapp/css/bootstrap.min.css" %}" rel="stylesheet" type="text/css" id="bootstrap" />
+<link href="{% static "blogapp/css/mdb.min.css" %}" rel="stylesheet" type="text/css" id="mdb" />
+<link href="{% static "blogapp/css/plugins.css" %}" rel="stylesheet" type="text/css" />
+<link href="{% static "blogapp/css/style.css" %}" rel="stylesheet" type="text/css" />
+<link href="{% static "blogapp/css/coloring.css" %}" rel="stylesheet" type="text/css" />
+<!-- color scheme -->
+<link href="{% static "blogapp/css/colors/scheme-01.css" %}" rel="stylesheet" type="text/css" id="colors" />
+    <title> {% block title %}{% endblock title %} </title>
+    {% block style %}{% endblock style %}
+    <style>
+        html, body {
+            height: 100%;
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+        }
+        body {
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between; /* Footer'ı en alta itmek için */
+        }
+        main {
+            flex-grow: 1; /* Main kısmı büyüt, böylece footer her zaman en altta kalır */
+        }
+    </style>
+    
+</head>
+<body>
+   <main >
+    <nav  class="navbar navbar-expand-sm navbar-dark bg-primary">
+        <div class="container">
+            <a class="navbar-brand" href="#">Blog App</a>
+            <button class="navbar-toggler d-lg-none" type="button" data-toggle="collapse" data-target="#collapsibleNavId" aria-controls="collapsibleNavId"
+                aria-expanded="false" aria-label="Toggle navigation"></button>
+            <div class="collapse navbar-collapse" id="collapsibleNavId">
+                <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
+
+                    
+                    {% if user.is_authenticated %}
+                        <li class="nav-item active">
+                            <a class="nav-link" href="{% url "logout" %}">Çıkış yap</a>
+                        </li>
+                        <li class="nav-item active">
+                            <a class="nav-link" style='color:blue' href="#"> {{user.username|hosgeldin}} </a>
+                        </li>
+                    {% else %}
+                        <li class="nav-item active">
+                            <a class="nav-link" href="{% url "register" %}">Kayıt Ol</a>
+                        </li>
+                        <li class="nav-item active">
+                            <a class="nav-link" href="{% url "login" %}">Giriş yap</a>
+                        </li>
+                    
+                    {% endif %}
+                </ul>
+            </div>
+        </div>
+    </nav>
+    <div class="container mt-5  justify-content-center m-auto ">
+        {% if messages %}
+            {% for message in messages %}
+            <div 
+            class="alert 
+            alert-{% if message.tags == 'error' %}danger{% else %}{{message.tags}}{% endif  %}" role="alert">
+               {{message}}
+              </div>
+            {% endfor %}
+        {% endif %}
+
+        {% block content %}{% endblock content %}
+    </div>
+   
+     
+</main>
+    <footer class='bg-dark'>
+    <div class="subfooter">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="de-flex">
+                        <div class="de-flex-col">
+                            <a>
+                                <span class="copy">Blog uygulamasi tum haklari saklidir</span>
+                            </a>
+                        </div>
+                        <div class="de-flex-col ">
+                            <div class="social-icons ">
+                                <a href="#"><i class="fa fa-facebook fa-lg bg-primary"></i></a>
+                                <a href="#"><i class="fa fa-twitter fa-lg bg-primary"></i></a>
+                                <a href="#"><i class="fa fa-linkedin fa-lg bg-primary"></i></a>
+                                <a href="#"><i class="fa fa-pinterest fa-lg bg-primary"></i></a>
+                                <a href="#"><i class="fa fa-rss fa-lg bg-primary"></i></a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</footer>
+    
+
+
+
+<script src="{% static "blogapp/js/jquery.min.js" %}"></script>
+<script src="{% static "blogapp/js/bootstrap.bundle.min.js" %}"></script>
+<script src="{% static "blogapp/js/plugins.min.js" %}"></script>
+<script src="{% static "blogapp/js/designesia.js" %}"></script>
+</body>
+</html>
